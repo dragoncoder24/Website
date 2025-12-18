@@ -1,151 +1,215 @@
-<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Special+Elite&display=swap" rel="stylesheet">
-
-<style>
-  :root {
-    --gold: #dcd0a7;
-    --parchment: #f5f5dc;
-    --sea-dark: #1b1b2f;
-  }
-
-  body {
-    margin: 0;
-    font-family: 'Special Elite', serif;
-    background: var(--sea-dark) url('https://www.transparenttextures.com/patterns/linen.png');
-    color: var(--parchment);
-  }
-
-  header h1 {
-    font-family: 'Pirata One', system-ui;
-    font-size: 4rem;
-    color: var(--gold);
-    text-shadow: 3px 3px 5px black;
-  }
-
-  /* --- HIDDEN MAP EFFECT --- */
-  .map-container {
-    position: relative;
-    border: 10px double var(--gold);
-    padding: 20px;
-    background: rgba(0,0,0,0.3);
-    overflow: hidden;
-    cursor: crosshair;
-  }
-
-  .map-container::after {
-    content: "HOVER TO REVEAL THE CHART";
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Pirata One';
-    font-size: 2rem;
-    opacity: 0.5;
-  }
-
-  .map-content {
-    opacity: 0;
-    transition: opacity 1s ease;
-  }
-
-  .map-container:hover .map-content {
-    opacity: 1;
-  }
-
-  .map-container:hover::after {
-    display: none;
-  }
-
-  /* --- RUM METER --- */
-  .rum-status {
-    background: #444;
-    height: 20px;
-    width: 100%;
-    border-radius: 10px;
-    margin: 10px 0;
-    border: 1px solid var(--gold);
-  }
-
-  .rum-fill {
-    height: 100%;
-    width: 85%; /* Jack's default state */
-    background: linear-gradient(90deg, #8b4513, #cd853f);
-    border-radius: 9px;
-    transition: width 2s ease-in-out;
-  }
-
-  /* --- BUTTON STYLES --- */
-  .pirate-btn {
-    background: var(--gold);
-    color: var(--sea-dark);
-    border: none;
-    padding: 10px 20px;
-    font-family: 'Pirata One';
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  .pirate-btn:hover {
-    background: #fff;
-  }
-</style>
-
-<body>
-
-<header>
-  <h1>Captain Jack Sparrow</h1>
-  <h2>"Not all treasure is silver and gold, mate."</h2>
-</header>
-
-<nav>
-  <a href="#projects">Plunders</a>
-  <a href="#logbook">Logbook</a>
-  <a href="#about">The Captain</a>
-  <a href="#vitals">Vitals</a>
-</nav>
-
-<section id="projects" class="map-container">
-  <div class="map-content">
-    <h3>Secret Charts & Plunders</h3>
-    <p><strong>The Black Pearl:</strong> Reclaimed. Currently smells like monkeys.</p>
-    <p><strong>Isla de Muerta:</strong> Location redacted. Avoid the gold.</p>
-  </div>
-</section>
-
-<section id="vitals">
-  <h3>Ship Vitals</h3>
-  <p>Rum Levels:</p>
-  <div class="rum-status"><div class="rum-fill" id="rumBar"></div></div>
-  
-  <div id="insult-box">
-    <p id="insult-text">"Why is the rum always gone?"</p>
-    <button class="pirate-btn" onclick="shoutInsult()">Insult a Crewman</button>
-  </div>
-</section>
-
-<script>
-  function shoutInsult() {
-    const insults = [
-      "You're the worst pirate I've ever heard of!",
-      "I wash my hands of this weirdness!",
-      "Stop hitting my ship!",
-      "I've got a jar of dirt!",
-      "Clearly you've never been to Singapore."
-    ];
-    const text = document.getElementById('insult-text');
-    const rum = document.getElementById('rumBar');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captain Jack Sparrow | The Legend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Special+Elite&display=swap" rel="stylesheet">
     
-    // Pick random insult
-    text.innerText = `"${insults[Math.floor(Math.random() * insults.length)]}"`;
-    
-    // Lower rum levels as he talks
-    const currentWidth = parseInt(rum.style.width) || 85;
-    rum.style.width = (currentWidth - 5) + "%";
-    
-    if(currentWidth < 10) {
-      text.innerText = "The rum is truly gone. This is a disaster.";
-      rum.style.width = "0%";
-    }
-  }
-</script>
+    <style>
+        :root {
+            --gold: #dcd0a7;
+            --deep-sea: #1b1b2f;
+            --ink: #2c1e16;
+            --paper: #e8d5b5;
+        }
 
+        /* --- Global Interactive Effects --- */
+        body {
+            margin: 0;
+            font-family: 'Special Elite', serif;
+            background: var(--deep-sea);
+            color: #f5f5dc;
+            transition: background 1s ease;
+            overflow-x: hidden;
+        }
+
+        /* Night Mode / Lantern Effect */
+        body.night-mode {
+            background: #05050a;
+            color: #888;
+        }
+
+        .lantern-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            cursor: pointer;
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px gold);
+        }
+
+        /* --- THE COMPASS (Follows Mouse) --- */
+        #compass-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        #compass-needle {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* --- WANTED POSTER INTERACTION --- */
+        .poster-creator {
+            background: var(--paper);
+            color: var(--ink);
+            padding: 20px;
+            border: 10px double #8b4513;
+            text-align: center;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border: 3px solid #2c1e16;
+            margin: 10px auto;
+            background: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            filter: sepia(1) contrast(1.2);
+        }
+
+        /* --- STYLES FOR THE LINKS/BOUNTIES --- */
+        .bounty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .bounty-poster {
+            background: var(--paper);
+            color: var(--ink);
+            padding: 20px;
+            text-decoration: none;
+            border: 2px solid #8b4513;
+            transition: 0.3s;
+            transform: rotate(-1deg);
+        }
+
+        .bounty-poster:hover {
+            transform: scale(1.05) rotate(1deg);
+            background: #fff;
+        }
+
+        /* Standard pirate elements from previous steps */
+        header { text-align: center; padding: 50px; animation: sway 6s infinite alternate; }
+        @keyframes sway { from { transform: rotate(-1deg); } to { transform: rotate(1deg); } }
+        .container { max-width: 900px; margin: auto; padding: 20px; }
+        section { background: rgba(0,0,0,0.3); padding: 30px; margin-bottom: 30px; border-radius: 5px; }
+        .pirate-btn { background: var(--gold); border: none; padding: 10px 20px; font-family: 'Pirata One'; cursor: pointer; }
+        .rum-bar-bg { background: #111; height: 20px; width: 100%; border-radius: 10px; margin: 10px 0; border: 1px solid var(--gold); }
+        .rum-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #8b4513, #cd853f); transition: 0.5s; }
+    </style>
+</head>
+<body id="mainBody">
+
+    <div class="lantern-toggle" onclick="toggleNight()" title="Toggle Lantern">🕯️</div>
+
+    <div id="compass-container">
+        <svg id="compass-needle" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#dcd0a7" stroke-width="2"/>
+            <path d="M50 10 L60 50 L50 90 L40 50 Z" fill="#a02d2d" />
+        </svg>
+    </div>
+
+    <header>
+        <h1 style="font-family:'Pirata One'; font-size: 4rem;">Captain Jack Sparrow</h1>
+        <p>"Bring me that horizon..."</p>
+    </header>
+
+    <div class="container">
+        
+        <section id="identity">
+            <h3 style="font-family:'Pirata One'; font-size: 2rem;">Identify Yourself</h3>
+            <div class="poster-creator">
+                <div class="profile-img" id="photo-box">
+                    <span id="photo-text">No Portrait</span>
+                </div>
+                <h2 style="font-family:'Pirata One'; margin: 5px 0;">WANTED</h2>
+                <input type="text" id="name-input" placeholder="Enter Pirate Alias..." oninput="updateName()">
+                <p>Reward: <span id="reward-val">100</span> Doubloons</p>
+                <button class="pirate-btn" onclick="increaseBounty()">Commit a Crime</button>
+            </div>
+        </section>
+
+        <section id="links">
+            <h3 style="font-family:'Pirata One'; font-size: 2rem;">Bounty Board (Links)</h3>
+            <div class="bounty-grid">
+                <a href="https://github.com" class="bounty-poster">
+                    <h4>The Code Hoard</h4>
+                    <p>Github Treasures</p>
+                </a>
+                <a href="#" class="bounty-poster">
+                    <h4>Port Royal</h4>
+                    <p>LinkedIn Merchant Guild</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="vitals">
+            <h3 style="font-family:'Pirata One'; font-size: 2rem;">Ship Logistics</h3>
+            <p>Rum Supply: <span id="rum-num">100</span>%</p>
+            <div class="rum-bar-bg"><div class="rum-bar-fill" id="rum-fill"></div></div>
+            <button class="pirate-btn" onclick="drinkRum()">Drink & Speak</button>
+            <p id="quote-box" style="font-style: italic; margin-top: 10px;"></p>
+        </section>
+
+    </div>
+
+    <script>
+        // 1. Compass Logic
+        document.addEventListener('mousemove', (e) => {
+            const needle = document.getElementById('compass-needle');
+            const box = needle.getBoundingClientRect();
+            const center = { x: box.left + box.width/2, y: box.top + box.height/2 };
+            const angle = Math.atan2(e.clientY - center.y, e.clientX - center.x);
+            needle.style.transform = `rotate(${angle * (180/Math.PI) + 90}deg)`;
+        });
+
+        // 2. Night Mode
+        function toggleNight() {
+            document.getElementById('mainBody').classList.toggle('night-mode');
+        }
+
+        // 3. Wanted Poster Logic
+        function updateName() {
+            const name = document.getElementById('name-input').value;
+            document.getElementById('photo-text').innerText = name || "No Portrait";
+        }
+
+        let bounty = 100;
+        function increaseBounty() {
+            bounty += 500;
+            document.getElementById('reward-val').innerText = bounty.toLocaleString();
+            alert("Crime committed! Your bounty has increased.");
+        }
+
+        // 4. Rum Logic
+        let rum = 100;
+        const quotes = ["Not all treasure is silver and gold.", "Why is the rum always gone?", "I've got a jar of dirt!", "Savvy?"];
+        
+        function drinkRum() {
+            if(rum > 0) {
+                rum -= 10;
+                document.getElementById('rum-fill').style.width = rum + "%";
+                document.getElementById('rum-num').innerText = rum;
+                document.getElementById('quote-box').innerText = quotes[Math.floor(Math.random()*quotes.length)];
+            } else {
+                alert("The rum is gone. Time to head to Tortuga.");
+            }
+        }
+    </script>
 </body>
+</html>
