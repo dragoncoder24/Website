@@ -3,24 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Captain Jack Sparrow | Black Pearl</title>
+<title>Captain Jack Sparrow | Captain's Log</title>
 <style>
   body {
     margin: 0;
     font-family: "Merriweather", serif;
-    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #1b1b2f;
+    background: #1b1b2f url('https://www.transparenttextures.com/patterns/linen.png') repeat;
     color: #f5f5dc;
-    overflow: hidden;
+    line-height: 1.6;
+    overflow-x: hidden;
   }
 
-  /* Header sway animation */
   header {
     text-align: center;
     padding: 5vh 2vw;
+    position: relative;
     transform-origin: center;
     animation: sway 6s ease-in-out infinite alternate;
-    position: relative;
-    z-index: 2;
   }
 
   h1 {
@@ -31,15 +30,14 @@
 
   h2 {
     font-size: 1.2rem;
-    font-style: italic;
+    font-weight: normal;
     color: #dcd0a7;
+    font-style: italic;
   }
 
   nav {
     text-align: center;
     margin: 2vh 0;
-    z-index: 2;
-    position: relative;
   }
 
   nav a {
@@ -50,14 +48,14 @@
     transition: color 0.3s;
   }
 
-  nav a:hover { color: #dcd0a7; }
+  nav a:hover {
+    color: #dcd0a7;
+  }
 
   section {
     max-width: 800px;
     margin: 5vh auto;
     padding: 0 2vw;
-    z-index: 2;
-    position: relative;
   }
 
   section h3 {
@@ -68,17 +66,15 @@
     align-items: center;
   }
 
-  section h3::before { content: "⚓ "; margin-right: 0.3em; }
+  section h3::before {
+    content: "⚓ ";
+    margin-right: 0.3em;
+  }
 
-  .quote { font-style: italic; color: #dcd0a7; margin: 0.5em 0; }
-
-  footer {
-    text-align: center;
-    padding: 3vh 2vw;
-    font-size: 0.9rem;
+  p.quote {
+    font-style: italic;
     color: #dcd0a7;
-    z-index: 2;
-    position: relative;
+    margin: 0.5em 0;
   }
 
   @keyframes sway {
@@ -86,54 +82,23 @@
     100% { transform: rotate(1deg); }
   }
 
-  /* Lanterns */
-  .lantern {
-    position: absolute;
-    width: 40px;
-    opacity: 0.7;
-    animation: floatLantern linear infinite;
-  }
-
-  @keyframes floatLantern {
-    0% { transform: translateY(100vh) translateX(0); }
-    100% { transform: translateY(-50px) translateX(50px); }
-  }
-
-  /* Compass */
-  #compass {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 80px;
-    pointer-events: none;
-    z-index: 3;
-    transform-origin: center center;
-  }
-
-  /* Map placeholder */
-  #map {
-    width: 100%;
-    height: 300px;
-    background: rgba(255,255,255,0.05);
-    border: 2px dashed #dcd0a7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  footer {
+    text-align: center;
+    padding: 3vh 2vw;
+    font-size: 0.9rem;
     color: #dcd0a7;
-    margin-top: 2em;
   }
 
+  blockquote {
+    margin-left: 1.5em;
+    font-style: italic;
+    border-left: 3px solid #dcd0a7;
+    padding-left: 0.5em;
+    color: #dcd0a7;
+  }
 </style>
 </head>
 <body>
-
-<!-- Floating Lanterns -->
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Chinese_lantern.svg" class="lantern" style="left:10%; animation-duration:20s;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Chinese_lantern.svg" class="lantern" style="left:40%; animation-duration:25s;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Chinese_lantern.svg" class="lantern" style="left:70%; animation-duration:22s;">
-
-<!-- Compass -->
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Compass_Rose_English_North.svg" id="compass">
 
 <header>
   <h1>Captain Jack Sparrow</h1>
@@ -149,47 +114,33 @@
 
 <section id="projects">
   <h3>My Plunders</h3>
-  <p><strong>The Black Pearl:</strong> Masterfully commandeered, temporarily lost, audaciously reclaimed.</p>
-  <p><strong>Escape from Tortuga:</strong> Escaped imminent doom with wit, rum, and theatrics.</p>
+  <p><strong>The Black Pearl:</strong> Masterfully commandeered, temporarily lost, and audaciously reclaimed. Lessons: trust sparingly, improvise constantly.</p>
+  <p><strong>Escape from Tortuga:</strong> Escaped imminent doom with wit, rum, and theatrics. Lessons: always leave a distraction behind.</p>
   <p class="quote">"I’m dishonest, and a dishonest man you can always trust to be dishonest."</p>
 </section>
 
 <section id="logbook">
   <h3>Captain's Log</h3>
-  <p>Entry 1: Sailed through a storm with nothing but a compass and stubborn optimism.</p>
-  <p>Entry 2: Encountered a mutiny I had predicted, redirected in my favor.</p>
+  <p>Entry 1: Sailed through a storm with nothing but a compass, a map, and stubborn optimism. Crew morale: questionable. Spirits: excellent.</p>
+  <p>Entry 2: Encountered a mutiny that I had predicted, then redirected in my favor. Strategy: confusion, misdirection, rum.</p>
   <p class="quote">"The problem is not the problem. The problem is your attitude about the problem."</p>
 </section>
 
 <section id="about">
   <h3>Who I Am</h3>
-  <p>Captain of the Black Pearl, seeker of adventure, expert in improvised solutions, connoisseur of rum, occasional philosopher.</p>
-  <p class="quote">"Why fight when you can mislead, trick, or vanish entirely?"</p>
+  <p>Captain of the Black Pearl, seeker of adventure, expert in improvised solutions, connoisseur of rum, occasional philosopher. I survive impossible odds and always find my way to the next horizon.</p>
+  <p class="quote">"Why fight when you can negotiate... or mislead, trick, or vanish entirely?"</p>
 </section>
 
 <section id="contact">
   <h3>Send a Parrot</h3>
   <p>Email: jack.sparrow@theblackpearl.carribean</p>
   <p>Other links: <a href="https://en.wikipedia.org/wiki/Jack_Sparrow" target="_blank" style="color:#dcd0a7;">Legendary Reference</a></p>
-  <div id="map">Interactive Map Placeholder</div>
 </section>
 
 <footer>
   &copy; 2025 Captain Jack Sparrow | Captain's Log
 </footer>
-
-<script>
-  // Compass follows mouse
-  const compass = document.getElementById('compass');
-  document.addEventListener('mousemove', e => {
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    const dx = e.clientX - centerX;
-    const dy = e.clientY - centerY;
-    const angle = Math.atan2(dy, dx) * (180/Math.PI);
-    compass.style.transform = `rotate(${angle}deg)`;
-  });
-</script>
 
 </body>
 </html>
