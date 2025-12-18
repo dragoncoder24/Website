@@ -3,212 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Captain Jack Sparrow | The Legend</title>
+    <title>Captain Jack Sparrow | The Professional Manifest</title>
+    <!-- Pirate Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Special+Elite&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --gold: #dcd0a7;
-            --deep-sea: #1b1b2f;
-            --ink: #2c1e16;
             --paper: #e8d5b5;
+            --ink: #2c1e16;
+            --sea: #1b1b2f;
+            --accent: #a02d2d;
         }
 
-        /* --- Global Interactive Effects --- */
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
+            background: var(--sea) url('https://www.transparenttextures.com/patterns/dark-leather.png');
+            color: var(--paper);
             font-family: 'Special Elite', serif;
-            background: var(--deep-sea);
-            color: #f5f5dc;
             transition: background 1s ease;
             overflow-x: hidden;
         }
 
-        /* Night Mode / Lantern Effect */
-        body.night-mode {
-            background: #05050a;
-            color: #888;
-        }
-
-        .lantern-toggle {
+        /* --- THE CURSED COMPASS --- */
+        #compass-ui {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 2000;
-            cursor: pointer;
-            font-size: 2rem;
-            filter: drop-shadow(0 0 10px gold);
-        }
-
-        /* --- THE COMPASS (Follows Mouse) --- */
-        #compass-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 100px;
-            height: 100px;
+            bottom: 30px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
             z-index: 1000;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
             pointer-events: none;
         }
 
-        #compass-needle {
+        #needle {
             width: 100%;
             height: 100%;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.15s ease-out;
+            transform-origin: center;
         }
 
-        /* --- WANTED POSTER INTERACTION --- */
-        .poster-creator {
-            background: var(--paper);
-            color: var(--ink);
-            padding: 20px;
-            border: 10px double #8b4513;
+        /* --- HEADER & SWAY --- */
+        header {
             text-align: center;
-            max-width: 300px;
-            margin: 20px auto;
+            padding: 60px 20px;
+            animation: sway 8s ease-in-out infinite alternate;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
 
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border: 3px solid #2c1e16;
-            margin: 10px auto;
-            background: #ccc;
+        @keyframes sway {
+            0% { transform: rotate(-1.5deg); }
+            100% { transform: rotate(1.5deg); }
+        }
+
+        h1 {
+            font-family: 'Pirata One', cursive;
+            font-size: 5rem;
+            color: var(--gold);
+            margin: 0;
+            text-shadow: 4px 4px 0px #000;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.5);
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            backdrop-filter: blur(5px);
+        }
+
+        nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Pirata One';
+            font-size: 1.5rem;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        /* --- VIEW SWITCHING LOGIC --- */
+        .page-view {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* --- THE MANIFEST (RESUME SECTION) --- */
+        .manifest, .wanted-poster {
+            background: var(--paper) url('https://www.transparenttextures.com/patterns/old-map.png');
+            color: var(--ink);
+            padding: 40px;
+            border: 15px solid transparent;
+            border-image: url('https://www.transparenttextures.com/patterns/dark-leather.png') 30 round;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        .manifest { transform: rotate(-0.5deg); }
+
+        .manifest h2, .wanted-poster h2 {
+            font-family: 'Pirata One';
+            font-size: 3rem;
+            border-bottom: 3px double var(--ink);
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .entry {
+            margin-bottom: 30px;
+            border-bottom: 1px dashed rgba(0,0,0,0.2);
+            padding-bottom: 15px;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* --- WANTED POSTER PAGE --- */
+        .wanted-poster {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            transform: rotate(1deg);
+        }
+
+        .wanted-photo {
+            width: 250px;
+            height: 250px;
+            background: #bbb;
+            margin: 20px auto;
+            border: 5px solid var(--ink);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5rem;
+            filter: sepia(1) contrast(1.2) grayscale(0.5);
+            position: relative;
+        }
+
+        .wanted-photo::after {
+            content: "";
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+            opacity: 0.3;
+        }
+
+        .bounty-amount {
+            font-family: 'Pirata One';
+            font-size: 4rem;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+
+        .wanted-input {
+            background: rgba(0,0,0,0.05);
+            border: 2px solid var(--ink);
+            padding: 10px;
+            font-family: 'Special Elite';
+            font-size: 1.2rem;
+            width: 80%;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* --- INTERACTIVE VITALS --- */
+        .vitals-box {
+            background: rgba(0,0,0,0.6);
+            padding: 30px;
+            border: 2px solid var(--gold);
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .rum-meter {
+            height: 30px;
+            background: #111;
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            margin: 20px 0;
             overflow: hidden;
-            filter: sepia(1) contrast(1.2);
         }
 
-        /* --- STYLES FOR THE LINKS/BOUNTIES --- */
-        .bounty-grid {
+        .rum-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #8b4513, #cd853f);
+            transition: width 0.5s ease;
+        }
+
+        .pirate-btn {
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Pirata One';
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .pirate-btn:hover { transform: scale(1.1); }
+
+        /* --- BOUNTY BOARD (LINKS) --- */
+        .bounty-board {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
         }
 
-        .bounty-poster {
+        .bounty-card {
             background: var(--paper);
             color: var(--ink);
-            padding: 20px;
+            padding: 30px;
+            text-align: center;
             text-decoration: none;
             border: 2px solid #8b4513;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
             transition: 0.3s;
-            transform: rotate(-1deg);
+            cursor: pointer;
         }
 
-        .bounty-poster:hover {
-            transform: scale(1.05) rotate(1deg);
+        .bounty-card:hover {
+            transform: translateY(-10px);
             background: #fff;
         }
 
-        /* Standard pirate elements from previous steps */
-        header { text-align: center; padding: 50px; animation: sway 6s infinite alternate; }
-        @keyframes sway { from { transform: rotate(-1deg); } to { transform: rotate(1deg); } }
-        .container { max-width: 900px; margin: auto; padding: 20px; }
-        section { background: rgba(0,0,0,0.3); padding: 30px; margin-bottom: 30px; border-radius: 5px; }
-        .pirate-btn { background: var(--gold); border: none; padding: 10px 20px; font-family: 'Pirata One'; cursor: pointer; }
-        .rum-bar-bg { background: #111; height: 20px; width: 100%; border-radius: 10px; margin: 10px 0; border: 1px solid var(--gold); }
-        .rum-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #8b4513, #cd853f); transition: 0.5s; }
+        .bounty-card h4 { font-family: 'Pirata One'; font-size: 1.8rem; margin: 10px 0; }
+        .reward { color: var(--accent); font-weight: bold; }
+
+        /* Lantern Toggle */
+        .lantern {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            z-index: 1001;
+            cursor: pointer;
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px gold);
+        }
+
+        .night-mode {
+            background-color: #05050a !important;
+            filter: sepia(0.3) brightness(0.7);
+        }
+
+        footer { text-align: center; padding: 50px; font-size: 0.9rem; opacity: 0.6; }
     </style>
 </head>
-<body id="mainBody">
+<body id="hull">
 
-    <div class="lantern-toggle" onclick="toggleNight()" title="Toggle Lantern">🕯️</div>
+    <div class="lantern" onclick="toggleLantern()" title="Light the Lantern">🕯️</div>
 
-    <div id="compass-container">
-        <svg id="compass-needle" viewBox="0 0 100 100">
+    <div id="compass-ui">
+        <svg id="needle" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="45" fill="none" stroke="#dcd0a7" stroke-width="2"/>
-            <path d="M50 10 L60 50 L50 90 L40 50 Z" fill="#a02d2d" />
+            <path d="M50 5 L60 50 L50 95 L40 50 Z" fill="#a02d2d" />
+            <circle cx="50" cy="50" r="5" fill="#dcd0a7" />
         </svg>
     </div>
 
     <header>
-        <h1 style="font-family:'Pirata One'; font-size: 4rem;">Captain Jack Sparrow</h1>
-        <p>"Bring me that horizon..."</p>
+        <h1 id="header-title">Captain Jack Sparrow</h1>
+        <p id="header-quote">"A wedding! I love weddings! Drinks all around!"</p>
     </header>
 
+    <nav>
+        <a onclick="showView('manifest')">The Manifest</a>
+        <a onclick="showView('vitals')">Ship Vitals</a>
+        <a onclick="showView('bounties')">Bounty Board</a>
+        <a onclick="showView('identity')">Identify Yourself</a>
+    </nav>
+
     <div class="container">
-        
-        <section id="identity">
-            <h3 style="font-family:'Pirata One'; font-size: 2rem;">Identify Yourself</h3>
-            <div class="poster-creator">
-                <div class="profile-img" id="photo-box">
-                    <span id="photo-text">No Portrait</span>
+
+        <!-- VIEW 1: THE MANIFEST (RESUME) -->
+        <div id="view-manifest" class="page-view active">
+            <section class="manifest">
+                <h2>The Official Manifest</h2>
+                <div class="entry">
+                    <div class="entry-header">
+                        <span>Captain | The Black Pearl</span>
+                        <span>1705 - Eternity</span>
+                    </div>
+                    <p>Oversaw total vessel operations including navigation through the World's End. Negotiated complex multi-party treaties between the East India Trading Company and the Brethren Court.</p>
                 </div>
-                <h2 style="font-family:'Pirata One'; margin: 5px 0;">WANTED</h2>
-                <input type="text" id="name-input" placeholder="Enter Pirate Alias..." oninput="updateName()">
-                <p>Reward: <span id="reward-val">100</span> Doubloons</p>
-                <button class="pirate-btn" onclick="increaseBounty()">Commit a Crime</button>
-            </div>
-        </section>
+                <div class="entry">
+                    <div class="entry-header">
+                        <span>Chief Negotiator | Tortuga Logistics</span>
+                        <span>Seasonal</span>
+                    </div>
+                    <p>Managed large-scale recruitment drives under high-pressure environments. Implemented a unique "Parley" based conflict resolution framework.</p>
+                </div>
+                <div class="entry">
+                    <h3 style="font-family:'Pirata One'; font-size: 2rem; border-bottom: 1px solid var(--ink);">Proficiencies</h3>
+                    <p><strong>Strategic Deception:</strong> Master level. <strong>Navigation:</strong> Supernatural cartography. <strong>Resilience:</strong> Surviving immortality-based curses.</p>
+                </div>
+            </section>
+        </div>
 
-        <section id="links">
-            <h3 style="font-family:'Pirata One'; font-size: 2rem;">Bounty Board (Links)</h3>
-            <div class="bounty-grid">
-                <a href="https://github.com" class="bounty-poster">
-                    <h4>The Code Hoard</h4>
-                    <p>Github Treasures</p>
-                </a>
-                <a href="#" class="bounty-poster">
-                    <h4>Port Royal</h4>
-                    <p>LinkedIn Merchant Guild</p>
-                </a>
-            </div>
-        </section>
+        <!-- VIEW 2: VITALS (RUM) -->
+        <div id="view-vitals" class="page-view">
+            <section class="vitals-box">
+                <h2 style="font-family:'Pirata One'; font-size: 3rem; color: var(--gold); margin:0;">Rum & Morale</h2>
+                <p>Ship's Rum Supply: <span id="rum-status">100</span>%</p>
+                <div class="rum-meter">
+                    <div class="rum-fill" id="rum-bar"></div>
+                </div>
+                <p id="jack-speak" style="font-style:italic; min-height: 50px;">"Welcome to the Caribbean, love."</p>
+                <button class="pirate-btn" onclick="drinkRum()">Drink & Discuss</button>
+                <button class="pirate-btn" style="background:var(--accent); color:white; margin-left:10px;" onclick="refillRum()">Refill Cask</button>
+            </section>
+        </div>
 
-        <section id="vitals">
-            <h3 style="font-family:'Pirata One'; font-size: 2rem;">Ship Logistics</h3>
-            <p>Rum Supply: <span id="rum-num">100</span>%</p>
-            <div class="rum-bar-bg"><div class="rum-bar-fill" id="rum-fill"></div></div>
-            <button class="pirate-btn" onclick="drinkRum()">Drink & Speak</button>
-            <p id="quote-box" style="font-style: italic; margin-top: 10px;"></p>
-        </section>
+        <!-- VIEW 3: BOUNTY BOARD (LINKS) -->
+        <div id="view-bounties" class="page-view">
+            <h2 style="font-family:'Pirata One'; font-size: 3rem; text-align:center; color: var(--gold);">The Bounty Board</h2>
+            <div class="bounty-board">
+                <div class="bounty-card" onclick="window.open('https://github.com', '_blank')">
+                    <h4>The Code Chest</h4>
+                    <p>Digital plunder and stolen scripts.</p>
+                    <span class="reward">REWARD: 5,000 GOLD</span>
+                </div>
+                <div class="bounty-card" onclick="showView('identity')">
+                    <h4>Identify Yourself</h4>
+                    <p>Register your own bounty & crimes.</p>
+                    <span class="reward">REWARD: VARIES</span>
+                </div>
+                <div class="bounty-card" onclick="window.open('https://linkedin.com', '_blank')">
+                    <h4>Merchant Guild</h4>
+                    <p>Formal parley and professional ties.</p>
+                    <span class="reward">REWARD: 10,000 GOLD</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: IDENTITY (WANTED POSTER CREATOR) -->
+        <div id="view-identity" class="page-view">
+            <section class="wanted-poster">
+                <h2 style="border-bottom: 5px solid var(--ink);">WANTED</h2>
+                <p style="font-family:'Pirata One'; font-size: 1.5rem; margin-top: 10px;">DEAD OR ALIVE</p>
+                <div class="wanted-photo" id="photo-render">
+                    <span id="poster-name">PIRATE NAME</span>
+                </div>
+                <input type="text" id="name-input" class="wanted-input" placeholder="Type your Pirate Alias..." oninput="updatePoster()">
+                <div class="bounty-amount">£<span id="reward-total">100</span></div>
+                <p style="font-weight: bold; margin-bottom: 20px;">FOR CRIMES AGAINST THE CROWN</p>
+                <button class="pirate-btn" onclick="commitCrime()">Commit a Digital Crime</button>
+                <button class="pirate-btn" style="background:#555; color:white;" onclick="showView('manifest')">Back to Manifest</button>
+            </section>
+        </div>
 
     </div>
 
+    <footer>
+        &copy; 1720 Captain Jack Sparrow. All rights reserved (by threat of mutiny).
+    </footer>
+
     <script>
-        // 1. Compass Logic
+        // 1. NAVIGATION LOGIC (The "JavaScript Page" Switcher)
+        function showView(viewId) {
+            // Hide all views
+            const views = document.querySelectorAll('.page-view');
+            views.forEach(v => v.classList.remove('active'));
+
+            // Show selected view
+            const target = document.getElementById('view-' + viewId);
+            if (target) target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 2. COMPASS LOGIC
         document.addEventListener('mousemove', (e) => {
-            const needle = document.getElementById('compass-needle');
-            const box = needle.getBoundingClientRect();
-            const center = { x: box.left + box.width/2, y: box.top + box.height/2 };
-            const angle = Math.atan2(e.clientY - center.y, e.clientX - center.x);
-            needle.style.transform = `rotate(${angle * (180/Math.PI) + 90}deg)`;
+            const needle = document.getElementById('needle');
+            const rect = needle.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+            needle.style.transform = `rotate(${angle * (180 / Math.PI) + 90}deg)`;
         });
 
-        // 2. Night Mode
-        function toggleNight() {
-            document.getElementById('mainBody').classList.toggle('night-mode');
-        }
+        // 3. RUM & QUOTES
+        let rumLevel = 100;
+        const quotes = [
+  "This is the day you will always remember as the day you almost caught Captain Jack Sparrow!",
+  "But you have heard of me.",
+  "Why is the rum always gone?",
+  "Savvy?",
+  "I’ve got a jar of dirt! I’ve got a jar of dirt, and guess what’s inside it!",
+  "Not all treasure is silver and gold, mate.",
+  "The problem is not the problem. The problem is your attitude about the problem.",
+  "Me? I’m dishonest. And a dishonest man you can always trust to be dishonest. Honestly.",
+  "It’s the honest ones you want to watch out for, because you can never predict when they’re going to do something incredibly stupid.",
+  "Bring me that horizon.",
+  "If you were waiting for the opportune moment, that was it.",
+  "I’m disinclined to acquiesce to your request. Means 'no'.",
+  "Did everyone see that? Because I will not be doing it again.",
+  "The world's still the same. There's just... less in it.",
+  "I’m an officer and a gentleman!",
+  "The only rules that really matter are these: what a man can do and what a man can’t do.",
+  "I love those moments. I like to wave at them as they pass me by.",
+  "You like pain? Try wearing a corset.",
+  "Take what you can, give nothing back!",
+  "Why fight when you can negotiate?",
+  "Crazy people don’t know they’re crazy. I know I’m crazy, therefore I’m not crazy, isn’t that crazy?",
+  "I do tell the truth quite a lot, yet people are always surprised.",
+  "Close your eyes and pretend it's all a bad dream. That's how I get by.",
+  "Nobody move! I dropped my brain!",
+  "My compass is unique. It points to the thing you want most in this world.",
+  "Hide the rum!",
+  "Why should I sail with any of you? Four of you have tried to kill me, and one of you succeeded.",
+  "Darling, I am the original.",
+  "I wash my hands of this weirdness.",
+  "If you had a sister and a dog... I'd choose the dog.",
+  "We’re lost! And we’re found! And we’re hungry!",
+  "I have a wedding to attend!",
+  "Did you just call me Jack? It’s Captain. Captain Jack Sparrow.",
+  "My tremendous intuitive sense of the female creature tells me you are troubled.",
+  "You're the one who bought it!",
+  "Clearly, you've never been to Singapore.",
+  "Ten years is a long time, mate. Especially if you’re a lobster.",
+  "Better to not know which moment may be your last.",
+  "Every morsel of your entire being alive to the infinite mystery of it all.",
+  "Gentlemen! You shall always remember this as the day that you almost caught Captain—",
+  "If I don't have the key, I can't open what I don't have that it opens.",
+  "So what is it that I don't have that the key opens?",
+  "No, 'dead' is more like 'gone'.",
+  "You've been there? To the World’s End?",
+  "You can't beat me, I'm already dead!",
+  "Drink up me hearties, yo ho!",
+  "How's the sister?",
+  "A lot of ice... but it’s very pretty.",
+  "I thought you were supposed to be dead. Well, I am. But I’m also a Captain.",
+  "Let us not, dear friends, forget our dear friends the cuttlefish.",
+  "I have no sympathy for any of you!",
+  "You’re not making any sense at all, mate.",
+  "I feel a sudden urge to jump overboard!",
+  "If you win, you get to live. If you lose, you’re dead. Come to think of it, I’d rather just be lucky.",
+  "No more than usual.",
+  "The Black Pearl is freedom.",
+  "I'm a man of my word... mostly.",
+  "You look familiar. Have I ever threatened you before?",
+  "Did I mention I’m a Captain?",
+  "You can always trust a dishonest man.",
+  "You may throw my hat, if you like.",
+  "I think I’ve seen enough of the world for one day.",
+  "You know, for a man who’s been dead, you’re not very quiet.",
+  "I’ve always been a bit of a romantic.",
+  "I’m not a hero, I’m a survivor.",
+  "I don’t need a map. I have a compass.",
+  "If I may make a suggestion? Run!",
+  "No survivors? Then where do the stories come from, I wonder?",
+  "I’m currently between ships.",
+  "You’ve stolen me and I’m here to take myself back.",
+  "Why is it that when I have a plan, it involves you being an idiot?",
+  "Your scent is quite refreshing... like a jasmine flower after a rainstorm.",
+  "You're not a eunuch, are you?",
+  "A wedding? I love weddings! Drinks all around!",
+  "Now... bring me that horizon!",
+  "Complications arose, ensued, and were overcome.",
+  "If you were waiting for the opportune moment, that was it.",
+  "I have a jars of dirt, and you have no idea what it opens.",
+  "The only thing that matters is what a man can do and what a man can’t do.",
+  "You're the worst pirate I've ever heard of.",
+  "Lord Cutler Beckett, I'm here to negotiate the cessation of hostilities.",
+  "It's not just a keel and a hull and a deck and sails. That's what a ship needs.",
+  "My spirit will live on.",
+  "The pirates are all being rounded up! No one is safe!",
+  "If you're going to kill me, then kill me. But don't you dare insult me.",
+  "I'm not looking for trouble. Trouble usually finds me.",
+  "One word, love: curiosity.",
+  "I'm a pirate, and a pirate's life for me.",
+  "Stop blowing holes in my ship!",
+  "You can't just leave me here!",
+  "I've got a feeling this is going to be a very long day.",
+  "There will be no living with her after this.",
+  "Think you can outrun the world?",
+  "Did everyone see that? Because I will not be doing it again.",
+  "I am Captain Jack Sparrow. The original, some might say.",
+  "You may kill me, but you may never insult me.",
+  "I am not confused. I am exploring options aggressively.",
+  "Luck improves dramatically when you act like it owes you.",
+  "This is either going very well or about to become a story.",
+  "Retreating sideways remains a valid strategy."
+];
 
-        // 3. Wanted Poster Logic
-        function updateName() {
-            const name = document.getElementById('name-input').value;
-            document.getElementById('photo-text').innerText = name || "No Portrait";
-        }
-
-        let bounty = 100;
-        function increaseBounty() {
-            bounty += 500;
-            document.getElementById('reward-val').innerText = bounty.toLocaleString();
-            alert("Crime committed! Your bounty has increased.");
-        }
-
-        // 4. Rum Logic
-        let rum = 100;
-        const quotes = ["Not all treasure is silver and gold.", "Why is the rum always gone?", "I've got a jar of dirt!", "Savvy?"];
-        
         function drinkRum() {
-            if(rum > 0) {
-                rum -= 10;
-                document.getElementById('rum-fill').style.width = rum + "%";
-                document.getElementById('rum-num').innerText = rum;
-                document.getElementById('quote-box').innerText = quotes[Math.floor(Math.random()*quotes.length)];
+            const bar = document.getElementById('rum-bar');
+            const status = document.getElementById('rum-status');
+            const speak = document.getElementById('jack-speak');
+
+            if (rumLevel > 0) {
+                rumLevel -= 10;
+                bar.style.width = rumLevel + "%";
+                status.innerText = rumLevel;
+                speak.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
             } else {
-                alert("The rum is gone. Time to head to Tortuga.");
+                speak.innerText = "The rum is truly gone. This is a tragedy of the highest order.";
             }
+        }
+
+        function refillRum() {
+            rumLevel = 100;
+            document.getElementById('rum-bar').style.width = "100%";
+            document.getElementById('rum-status').innerText = "100";
+            document.getElementById('jack-speak').innerText = "Ah, much better! Bring me that horizon!";
+        }
+
+        // 4. IDENTITY POSTER LOGIC
+        let currentBounty = 100;
+        function updatePoster() {
+            const nameInput = document.getElementById('name-input').value;
+            document.getElementById('poster-name').innerText = nameInput || "PIRATE NAME";
+        }
+
+        function commitCrime() {
+            currentBounty += 500;
+            document.getElementById('reward-total').innerText = currentBounty.toLocaleString();
+            const crimes = ["Stole a ship", "Escaped Port Royal", "Drank too much rum", "Negotiated poorly", "Befriended a monkey"];
+            const crime = crimes[Math.floor(Math.random()*crimes.length)];
+            document.getElementById('jack-speak').innerText = `You just ${crime}! Your bounty grows!`;
+        }
+
+        // 5. LANTERN (NIGHT MODE)
+        function toggleLantern() {
+            document.getElementById('hull').classList.toggle('night-mode');
         }
     </script>
 </body>
