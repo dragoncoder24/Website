@@ -1,0 +1,299 @@
+:root {
+    --gold: #dcd0a7;
+    --paper: #e8d5b5;
+    --ink: #2c1e16;
+    --sea: #1b1b2f;
+    --accent: #a02d2d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--sea) url('https://www.transparenttextures.com/patterns/dark-leather.png');
+    color: var(--paper);
+    font-family: 'Special Elite', serif;
+    transition: background 1s ease, filter 0.5s ease;
+    overflow-x: hidden;
+}
+
+/* --- THE CURSED COMPASS --- */
+#compass-ui {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 120px;
+    height: 120px;
+    z-index: 1000;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+    pointer-events: none;
+}
+
+#needle {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.15s ease-out;
+    transform-origin: center;
+}
+
+/* --- HEADER & SWAY --- */
+header {
+    text-align: center;
+    padding: 60px 20px;
+    animation: sway 8s ease-in-out infinite alternate;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+}
+
+#header-quote {
+    transition: opacity 0.5s ease;
+    max-width: 800px;
+    margin: 10px auto;
+    font-style: italic;
+}
+
+@keyframes sway {
+    0% { transform: rotate(-1.5deg); }
+    100% { transform: rotate(1.5deg); }
+}
+
+h1 {
+    font-family: 'Pirata One', cursive;
+    font-size: 5rem;
+    color: var(--gold);
+    margin: 0;
+    text-shadow: 4px 4px 0px #000;
+}
+
+/* --- NAVIGATION --- */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.5);
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    backdrop-filter: blur(5px);
+}
+
+nav a {
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Pirata One';
+    font-size: 1.5rem;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+nav a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px var(--gold);
+}
+
+/* --- VIEW SWITCHING LOGIC --- */
+.page-view {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.page-view.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- MAIN CONTAINER --- */
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* --- THE MANIFEST (REPLACED CONTENT) --- */
+.manifest, .wanted-poster {
+    background: var(--paper) url('https://www.transparenttextures.com/patterns/old-map.png');
+    color: var(--ink);
+    padding: 40px;
+    border: 15px solid transparent;
+    border-image: url('https://www.transparenttextures.com/patterns/dark-leather.png') 30 round;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    position: relative;
+}
+
+.manifest { transform: rotate(-0.5deg); }
+
+.manifest h2, .wanted-poster h2 {
+    font-family: 'Pirata One';
+    font-size: 3rem;
+    border-bottom: 3px double var(--ink);
+    margin-top: 0;
+    text-align: center;
+}
+
+.entry {
+    margin-bottom: 30px;
+    border-bottom: 1px dashed rgba(0,0,0,0.2);
+    padding-bottom: 15px;
+}
+
+.entry-header {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    font-family: 'Pirata One';
+    letter-spacing: 1px;
+}
+
+.os-list {
+    list-style-type: '☠️ ';
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.os-list li {
+    cursor: help;
+    transition: transform 0.2s;
+}
+
+.os-list li:hover {
+    transform: translateX(10px);
+    color: var(--accent);
+}
+
+/* --- WANTED POSTER PAGE --- */
+.wanted-poster {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    transform: rotate(1deg);
+}
+
+.wanted-photo {
+    width: 250px;
+    height: 250px;
+    background: #bbb;
+    margin: 20px auto;
+    border: 5px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    filter: sepia(1) contrast(1.2) grayscale(0.5);
+    position: relative;
+}
+
+.wanted-photo::after {
+    content: "";
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+    opacity: 0.3;
+}
+
+.bounty-amount {
+    font-family: 'Pirata One';
+    font-size: 4rem;
+    color: var(--accent);
+    margin: 10px 0;
+}
+
+.wanted-input {
+    background: rgba(0,0,0,0.05);
+    border: 2px solid var(--ink);
+    padding: 10px;
+    font-family: 'Special Elite';
+    font-size: 1.2rem;
+    width: 80%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* --- INTERACTIVE VITALS --- */
+.vitals-box {
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border: 2px solid var(--gold);
+    margin-top: 50px;
+    text-align: center;
+}
+
+.rum-meter {
+    height: 30px;
+    background: #111;
+    border-radius: 15px;
+    border: 2px solid var(--gold);
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.rum-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #8b4513, #cd853f);
+    transition: width 0.5s ease;
+}
+
+.pirate-btn {
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 15px 30px;
+    font-family: 'Pirata One';
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.pirate-btn:hover { transform: scale(1.1); }
+
+/* --- BOUNTY BOARD (LINKS) --- */
+.bounty-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 50px;
+}
+
+.bounty-card {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 30px;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid #8b4513;
+    box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.bounty-card:hover {
+    transform: translateY(-10px);
+    background: #fff;
+}
+
+.bounty-card h4 { font-family: 'Pirata One'; font-size: 1.8rem; margin: 10px 0; }
+.reward { color: var(--accent); font-weight: bold; }
+
+/* Lantern Toggle */
+.lantern {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 1001;
+    cursor: pointer;
+    font-size: 2.5rem;
+    filter: drop-shadow(0 0 10px gold);
+}
+
+.night-mode {
+    background-color: #05050a !important;
+    filter: sepia(0.3) brightness(0.7);
+}
+
+footer { text-align: center; padding: 50px; font-size: 0.9rem; opacity: 0.6; }
