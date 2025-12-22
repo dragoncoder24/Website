@@ -368,7 +368,13 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
+        /* link */
+        function interactBounty(url) {
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    // Custom console mutter
+    console.log(`%c "${randomQuote}" `, `background: #2c1e16; color: #dcd0a7; font-family: "Pirata One"; font-size: 16px;`);
+    window.open(url, '_blank');
+}
         /* 
        =========================================================
        Firebase configuration
@@ -596,5 +602,6 @@
         */
     </script>
 </body>
+
 
 </html>
