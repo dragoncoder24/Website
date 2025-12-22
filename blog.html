@@ -87,17 +87,36 @@
 
         nav {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 1px solid var(--gold);
-            border-bottom: 1px solid var(--gold);
+            justify-content: space-between;
+            /* Pushes title to left, links to right */
+            align-items: center;
+            padding: 15px 40px;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
             position: sticky;
             top: 0;
             z-index: 900;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
         }
+
+        nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Pirata One', cursive;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid transparent;
+            padding: 5px 15px;
+        }
+
+        nav a:hover {
+            color: white;
+            background: var(--accent);
+            border: 1px solid var(--gold);
+        }
+
 
         .container {
             max-width: 1100px;
@@ -130,6 +149,14 @@
 
             h1 {
                 font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
             }
         }
 
@@ -292,9 +319,10 @@
     </header>
 
     <nav>
-        <span style="color: var(--gold); font-family: 'Pirata One'; font-size: 1.8rem; letter-spacing: 2px;">LOG OF
-            THE BLACK PEARL</span>
-        <a onclick="interactBounty('index.html')">Home</a>
+        <span style="color: var(--gold); font-family: 'Pirata One'; font-size: 1.8rem; letter-spacing: 2px;">
+            THE BLACK PEARL
+        </span>
+        <a href="index.html">Home</a>
     </nav>
 
     <div class="container">
@@ -368,13 +396,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        /* link */
-        function interactBounty(url) {
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    // Custom console mutter
-    console.log(`%c "${randomQuote}" `, `background: #2c1e16; color: #dcd0a7; font-family: "Pirata One"; font-size: 16px;`);
-    window.open(url, '_blank');
-}
+
         /* 
        =========================================================
        Firebase configuration
@@ -602,6 +624,5 @@
         */
     </script>
 </body>
-
 
 </html>
