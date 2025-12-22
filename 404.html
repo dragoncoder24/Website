@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Lost at Sea</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #dcd0a7;
+            --paper: #e8d5b5;
+            --ink: #2c1e16;
+            --sea: #1b1b2f;
+            --accent: #a02d2d;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--sea) url('https://www.transparenttextures.com/patterns/dark-leather.png');
+            color: var(--paper);
+            font-family: 'Special Elite', serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .error-container {
+            background: var(--paper) url('https://www.transparenttextures.com/patterns/old-map.png');
+            color: var(--ink);
+            padding: 60px 40px;
+            border: 10px solid transparent;
+            border-image: url('https://www.transparenttextures.com/patterns/dark-leather.png') 30 round;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+            max-width: 600px;
+            position: relative;
+            animation: drift 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) rotate(-1deg); }
+            50% { transform: translate(10px, 15px) rotate(1deg); }
+            100% { transform: translate(-5px, -10px) rotate(-0.5deg); }
+        }
+
+        h1 {
+            font-family: 'Pirata One', cursive;
+            font-size: 8rem;
+            margin: 0;
+            line-height: 1;
+            color: var(--accent);
+            text-shadow: 2px 2px 0px var(--ink);
+        }
+
+        h2 {
+            font-family: 'Pirata One', cursive;
+            font-size: 2.5rem;
+            margin: 10px 0 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .pirate-btn {
+            background: var(--ink);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 15px 30px;
+            font-family: 'Pirata One';
+            font-size: 1.5rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .pirate-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .fog {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(transparent, rgba(27, 27, 47, 0.8));
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #compass-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.05;
+            width: 80%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fog"></div>
+
+    <div class="error-container">
+        <svg id="compass-background" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="1" />
+            <path d="M50 5 L55 45 L95 50 L55 55 L50 95 L45 55 L5 50 L45 45 Z" fill="currentColor" />
+        </svg>
+
+        <h1>404</h1>
+        <h2>Off the Edge of the Map</h2>
+        <p>
+            "There be monsters here, matey. This stretch of the digital sea hasn't been charted, or perhaps it's been swallowed by the locker."
+        </p>
+        <a href="index.html" class="pirate-btn">Return to the Pearl</a>
+    </div>
+
+    <script>
+        // Subtle interaction: The container reacts slightly to mouse movement
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.error-container');
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+            container.style.transform = `translate(${xAxis}px, ${yAxis}px)`;
+        });
+    </script>
+</body>
+
+</html>

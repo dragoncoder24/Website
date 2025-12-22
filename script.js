@@ -182,10 +182,12 @@ function interactBounty(url) {
     window.open(url, '_blank');
 }
 
-// 6. LANTERN (NIGHT MODE)
+// 6. Candle (NIGHT MODE)
 function toggleLantern() {
     document.getElementById('hull').classList.toggle('night-mode');
 }
+
+
 
 // Auto-mutter every 20 seconds
 setInterval(updateHeaderQuote, 20000);
